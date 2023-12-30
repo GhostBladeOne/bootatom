@@ -621,16 +621,16 @@ export class AtomicalOperationBuilder {
             copiedData["args"]["time"] = unixtime;
         }
 
-        // console.log("copiedData", copiedData);
+        console.log("copiedData", copiedData);
         const mockAtomPayload = new AtomicalsPayload(copiedData);
         if (this.options.verbose) {
-            // console.log("copiedData", copiedData);
+            console.log("copiedData", copiedData);
         }
         const payloadSize = mockAtomPayload.cbor().length;
-        // console.log("Payload CBOR Size (bytes): ", payloadSize);
+        console.log("Payload CBOR Size (bytes): ", payloadSize);
 
         if (payloadSize <= 1000) {
-            // console.log("Payload Encoded: ", copiedData);
+            console.log("Payload Encoded: ", copiedData);
         }
 
         const mockBaseCommitForFeeCalculation: { scriptP2TR, hashLockP2TR } = prepareCommitRevealConfig(this.options.opType, fundingKeypair, mockAtomPayload)
@@ -721,7 +721,7 @@ export class AtomicalOperationBuilder {
                 let lastUpdateNonceTime = Date.now();
                 const fundingUtxo = await getFundingUtxo(this.options.electrumApi, fundingKeypair.address, fees.commitAndRevealFeePlusOutputs, true);
                 // const fundingUtxo = await getFundingUtxo(this.options.electrumApi, "bc1pr888x9s4a8zlx9cvlrg2r8tthym2m6yxvea90nry53u5qrcp95vql420j4", fees.commitAndRevealFeePlusOutputs, true);
-                // printBitworkLog(this.bitworkInfoCommit as any, true);
+                printBitworkLog(this.bitworkInfoCommit as any, true);
                 this.options.electrumApi.close();
 
                 const MAX_SEQUENCE = 0xffffffff;
@@ -826,7 +826,7 @@ export class AtomicalOperationBuilder {
             };
 
             if (performBitworkForRevealTx) {
-                // printBitworkLog(this.bitworkInfoReveal as any);
+                printBitworkLog(this.bitworkInfoReveal as any);
             }
             noncesGenerated = 0;
             do {

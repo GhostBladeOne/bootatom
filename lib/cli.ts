@@ -91,21 +91,21 @@ function showWalletFTBalancesDetails(obj: any, showutxos = false, accumulated) {
     if (atomical['type'] !== 'FT') {
       continue;
     }
-    // console.log('-----');
-    // console.log('Atomical id:', atomicalId)
-    // console.log('Atomical number:', atomical['atomical_number'])
-    // console.log('Atomical type:', atomical['type'])
-    // console.log('Atomical subtype:', atomical['subtype'])
-    // console.log('Requested ticker:', atomical['request_ticker'])
-    // console.log('Requested ticker status:', atomical['request_ticker_status']['status'])
-    // console.log('Ticker:', atomical['ticker'])
-    // console.log('Confirmed balance:', atomical['confirmed'])
-    // console.log('UTXOs for Atomical:', atomicalsUtxosByAtomicalId[atomicalId].length);
+    console.log('-----');
+    console.log('Atomical id:', atomicalId)
+    console.log('Atomical number:', atomical['atomical_number'])
+    console.log('Atomical type:', atomical['type'])
+    console.log('Atomical subtype:', atomical['subtype'])
+    console.log('Requested ticker:', atomical['request_ticker'])
+    console.log('Requested ticker status:', atomical['request_ticker_status']['status'])
+    console.log('Ticker:', atomical['ticker'])
+    console.log('Confirmed balance:', atomical['confirmed'])
+    console.log('UTXOs for Atomical:', atomicalsUtxosByAtomicalId[atomicalId].length);
 
     accumulated[atomical['ticker']] = accumulated[atomical['ticker']] || 0;
     accumulated[atomical['ticker']] += atomical['confirmed']
-    // if (showutxos)
-    //   console.log(JSON.stringify(atomicalsUtxosByAtomicalId[atomicalId], null, 2));
+    if (showutxos)
+      console.log(JSON.stringify(atomicalsUtxosByAtomicalId[atomicalId], null, 2));
   }
   return accumulated
 }
