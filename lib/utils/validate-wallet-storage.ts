@@ -29,7 +29,6 @@ export interface IValidatedWalletInfo {
 
 export const validateWalletStorage = async (): Promise<IValidatedWalletInfo> => {
   try {
-    console.log('walletPath', walletPath);
     const wallet: any = await jsonFileReader(walletPath);
     if (!wallet.phrase) {
       console.log(`phrase field not found in ${walletPath}`);

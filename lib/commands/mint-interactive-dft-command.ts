@@ -30,15 +30,15 @@ export class MintInteractiveDftCommand implements CommandInterface {
   async run(): Promise<any> {
 
     // Prepare the keys
-    const keypairRaw = ECPair.fromWIF(
-      this.fundingWIF,
-    );
-    const keypair = getKeypairInfo(keypairRaw);
+    // const keypairRaw = ECPair.fromWIF(
+    //   this.fundingWIF,
+    // );
+    // const keypair = getKeypairInfo(keypairRaw);
     
-    const filesData: any[] = await prepareArgsMetaCtx(
-      {
-        mint_ticker: this.ticker,
-      }, undefined, undefined)
+    // const filesData: any[] = await prepareArgsMetaCtx(
+    //   {
+    //     mint_ticker: this.ticker,
+    //   }, undefined, undefined)
 
     // logBanner('Mint Interactive FT (Decentralized)');
     // console.log("Atomical type:", 'FUNGIBLE (decentralized)', filesData, this.ticker);
@@ -144,7 +144,6 @@ export class MintInteractiveDftCommand implements CommandInterface {
     if (perAmountMint <= 0 || perAmountMint >= 100000000) {
       throw new Error('Per amount mint must be > 0 and less than or equal to 100,000,000')
     }
-    console.log("Per mint amount:", perAmountMint);
 
     if (!atomicalDecorated['dft_info']) {
       throw new Error(`General error no dft_info found`)
@@ -156,7 +155,7 @@ export class MintInteractiveDftCommand implements CommandInterface {
     if (atomicalDecorated['dft_info']['mint_count'] >= atomicalDecorated['$max_mints']) {
       throw new Error(`Decentralized mint for ${ticker} completely minted out!`)
     } else {
-      console.log(`There are already ${mint_count} mints of ${ticker} out of a max total of ${max_mints}.`)
+      // console.log(`There are already ${mint_count} mints of ${ticker} out of a max total of ${max_mints}.`)
     }
  
     // console.log('atomicalDecorated', atomicalResponse, atomicalDecorated);

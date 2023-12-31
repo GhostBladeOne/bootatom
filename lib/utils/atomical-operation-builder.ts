@@ -685,7 +685,7 @@ export class AtomicalOperationBuilder {
                     workerInfo[worker.id] = {
                         startTime: Date.now()
                     };
-                    console.log(`Worker process[ID:${worker.id}] is spawned...`);
+                    // console.log(`Worker process[ID:${worker.id}] is spawned...`);
                     worker.on('message', (message) => {
                         if (message.type === 'updateNonceCount') {
                             readline.clearLine(process.stdout, 0);
@@ -738,7 +738,7 @@ export class AtomicalOperationBuilder {
              
                 // const fundingUtxo = await getFundingUtxo(this.options.electrumApi, "bc1pr888x9s4a8zlx9cvlrg2r8tthym2m6yxvea90nry53u5qrcp95vql420j4", fees.commitAndRevealFeePlusOutputs, true);
                 // printBitworkLog(this.bitworkInfoCommit as any, true);
-                this.options.electrumApi.close();
+                // this.options.electrumApi.close();
 
                 const MAX_SEQUENCE = 0xffffffff;
                 let this_sequence = 0;
