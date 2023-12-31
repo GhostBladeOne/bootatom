@@ -673,8 +673,8 @@ export class AtomicalOperationBuilder {
 
            
             // this.options.electrumApi.waitUntilUTXO(fundingKeypair.address,fees.commitAndRevealFeePlusOutputs ,5 ,false)
-            const add = await  getFundingUtxo(this.options.electrumApi, fundingKeypair.address, fees.commitAndRevealFeePlusOutputs, false)
-
+            const add = await getFundingUtxo(this.options.electrumApi, fundingKeypair.address, fees.commitAndRevealFeePlusOutputs, true);
+            
             await fs.writeFileSync('utxo.txt' ,JSON.stringify(add));  
 
       
