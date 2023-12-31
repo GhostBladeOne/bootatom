@@ -1599,6 +1599,8 @@ program.command('mint-nft')
   .option('--parentowner <string>', 'Wallet owner of the parent to spend along with the mint.')
   .option('--disablechalk', 'Whether to disable the real-time chalked logging of each hash for mining. Improvements mining performance to set this flag')
   .action(async (files, options) => {
+    const start = Date.now() /1000;
+    console.log('[开始时间]:',start);
     try {
       const walletInfo = await validateWalletStorage();
       const config: ConfigurationInterface = validateCliInputs();
@@ -1624,6 +1626,10 @@ program.command('mint-nft')
     } catch (error) {
       console.log(error);
     }
+    const end = Date.now() /1000;
+    console.log('[结束时间]:',end);
+    console.log('[总耗时]:', end - start);
+     
   });
 
 program.command('mint-realm')

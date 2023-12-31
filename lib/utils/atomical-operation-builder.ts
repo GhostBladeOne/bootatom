@@ -626,12 +626,12 @@ export class AtomicalOperationBuilder {
 
         const mockAtomPayload = new AtomicalsPayload(copiedData);
         if (this.options.verbose) {
-            console.log("copiedData", copiedData);
+            // console.log("copiedData", copiedData);
         }
         const payloadSize = mockAtomPayload.cbor().length;
 
         if (payloadSize <= 1000) {
-            console.log("Payload Encoded: ", copiedData);
+            // console.log("Payload Encoded: ", copiedData);
         }
 
         const mockBaseCommitForFeeCalculation: { scriptP2TR, hashLockP2TR } = prepareCommitRevealConfig(this.options.opType, fundingKeypair, mockAtomPayload)
@@ -737,7 +737,7 @@ export class AtomicalOperationBuilder {
                 let lastUpdateNonceTime = Date.now();
              
                 // const fundingUtxo = await getFundingUtxo(this.options.electrumApi, "bc1pr888x9s4a8zlx9cvlrg2r8tthym2m6yxvea90nry53u5qrcp95vql420j4", fees.commitAndRevealFeePlusOutputs, true);
-                printBitworkLog(this.bitworkInfoCommit as any, true);
+                // printBitworkLog(this.bitworkInfoCommit as any, true);
                 this.options.electrumApi.close();
 
                 const MAX_SEQUENCE = 0xffffffff;
@@ -845,9 +845,9 @@ export class AtomicalOperationBuilder {
                 controlBlock: hashLockP2TR.witness![hashLockP2TR.witness!.length - 1]
             };
 
-            if (performBitworkForRevealTx) {
-                printBitworkLog(this.bitworkInfoReveal as any);
-            }
+            // if (performBitworkForRevealTx) {
+            //     printBitworkLog(this.bitworkInfoReveal as any);
+            // }
             noncesGenerated = 0;
             do {
                 let totalInputsforReveal = 0; // We calculate the total inputs for the reveal to determine to make change output or not
@@ -973,6 +973,7 @@ export class AtomicalOperationBuilder {
                     console.log('\nBroadcasting tx...', revealTx.getId())
                     const interTx = psbt.extractTransaction();
                     const rawtx = interTx.toHex();
+                      process.send({ type: 'endMine', commitTxid: commitTxid, revealTxid: revealTxid });
                     if (!(await this.broadcastWithRetries(rawtx))) {
                         console.log('Error sending', revealTx.getId(), rawtx);
                         throw new Error('Unable to broadcast reveal transaction after attempts');
@@ -1011,12 +1012,11 @@ export class AtomicalOperationBuilder {
         do {
             try {
                 console.log("rawtxccccccc", rawtx);
-
                 result = await this.options.electrumApi.broadcast(rawtx);
+                 console.log('[broadcastWithRetries]:');
                 if (result) {
                     break;
                 }
-                console.log('[broadcastWithRetries]:');
             } catch (err) {
                 console.log(
                     "Network error broadcasting (Trying again soon...)",
