@@ -1011,16 +1011,15 @@ export class AtomicalOperationBuilder {
         let result = null;
         do {
             try {
-                console.log("rawtxccccccc", rawtx);
+                console.log("rawtx", rawtx);
                 result = await this.options.electrumApi.broadcast(rawtx);
-                 console.log('[broadcastWithRetries]:');
                 if (result) {
                     break;
                 }
-            } catch (err) {
+            } catch (err:any) {
                 console.log(
                     "Network error broadcasting (Trying again soon...)",
-                    err
+                    err.data.message
                 );
                 await this.options.electrumApi.resetConnection();
                 // Put in a sleep to help the connection reset more gracefully in case there is some delay
