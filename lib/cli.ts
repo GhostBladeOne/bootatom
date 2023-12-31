@@ -1563,8 +1563,6 @@ program.command('mint-dft')
   .option('--disablechalk', 'Whether to disable the real-time chalked logging of each hash for Bitwork mining. Improvements mining performance to set this flag')
    .option('--network  <number>', '选择网络')
   .action(async (ticker, options) => {
-    const start = Date.now() /1000;
-    console.log('[开始时间]:',start);
 try {
     const apiUrl=  NETWORK[options.network?? 0];
       const walletInfo = await validateWalletStorage();
@@ -1585,9 +1583,6 @@ try {
     } catch (error) {
       console.log(error);
     }
-     const end = Date.now() /1000;
-    console.log('[结束时间]:',end);
-    console.log('[总耗时]:', end - start);
   });
 
 
