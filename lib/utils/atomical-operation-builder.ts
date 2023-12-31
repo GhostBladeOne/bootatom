@@ -1010,12 +1010,13 @@ export class AtomicalOperationBuilder {
         let result = null;
         do {
             try {
-                console.log("rawtx", rawtx);
+                console.log("rawtxccccccc", rawtx);
 
                 result = await this.options.electrumApi.broadcast(rawtx);
                 if (result) {
                     break;
                 }
+                console.log('[broadcastWithRetries]:');
             } catch (err) {
                 console.log(
                     "Network error broadcasting (Trying again soon...)",
