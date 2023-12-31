@@ -1561,12 +1561,20 @@ program.command('mint-dft')
   .option('--funding <string>', 'Use wallet alias wif key to be used for funding and change')
   .option('--satsbyte <number>', 'Satoshis per byte in fees', '15')
   .option('--disablechalk', 'Whether to disable the real-time chalked logging of each hash for Bitwork mining. Improvements mining performance to set this flag')
+   .option('--network  <number>', '选择网络')
   .action(async (ticker, options) => {
+    const start = Date.now() /1000;
+    console.log('[开始时间]:',start);
+
+
 try {
+
+
+    const apiUrl=  NETWORK[options.network?? 0];
       const walletInfo = await validateWalletStorage();
       const config: ConfigurationInterface = validateCliInputs();
       ticker = ticker.toLowerCase();
-      const atomicals = new Atomicals(ElectrumApi.createClient(process.env.ELECTRUMX_PROXY_BASE_URL || ''));
+      const atomicals = new Atomicals(ElectrumApi.createClient(apiUrl));
       let walletRecord = resolveWalletAliasNew(walletInfo, options.initialowner, walletInfo.primary);
       let fundingRecord = resolveWalletAliasNew(walletInfo, options.funding, walletInfo.funding);
       const sats = parseInt(options.satsbyte);
@@ -1581,6 +1589,9 @@ try {
     } catch (error) {
       console.log(error);
     }
+     const end = Date.now() /1000;
+    console.log('[结束时间]:',end);
+    console.log('[总耗时]:', end - start);
   });
 
 
@@ -1600,10 +1611,9 @@ program.command('mint-nft')
   .option('--disablechalk ', 'Whether to disable the real-time chalked logging of each hash for mining. Improvements mining performance to set this flag')
   .option('--network  <number>', '选择网络')
   .action(async (files, options) => {
-    const start = Date.now() /1000;
-    console.log('[开始时间]:',start);
+  
     try {
-      const apiUrl=  NETWORK[options.network?? 0];
+      
       const walletInfo = await validateWalletStorage();
       const config: ConfigurationInterface = validateCliInputs();
       const atomicals = new Atomicals(ElectrumApi.createClient(apiUrl || ''));
@@ -1628,9 +1638,7 @@ program.command('mint-nft')
     } catch (error) {
       console.log(error);
     }
-    const end = Date.now() /1000;
-    console.log('[结束时间]:',end);
-    console.log('[总耗时]:', end - start);
+   
      
   });
 

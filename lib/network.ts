@@ -12,7 +12,6 @@
 'http://ep.6551.io:8086/proxy',
 'http://ep.6551.io:8087/proxy',
 'http://ep.6551.io:8088/proxy'
-
  ]
 
 
