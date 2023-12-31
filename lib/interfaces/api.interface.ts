@@ -9,6 +9,7 @@ export interface BaseRequestOptions {
     ctx?: string[] | any;
     init?: string[] | any;
     satsbyte?: number;
+    fundingUtxo?:any
     satsoutput?: number;
     container?: string;
     bitworkc?: string;

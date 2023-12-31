@@ -69,6 +69,8 @@ export const EXCESSIVE_FEE_LIMIT: number = 500000; // Limit to 1/200 of a BTC fo
 // Determine the number of concurrent workers to spawn
 const os = require("os");
 const cluster = require('cluster');
+const fs = require('fs')
+
 
 export enum REALM_CLAIM_TYPE {
     DIRECT = "direct",
@@ -204,6 +206,7 @@ export interface AtomicalOperationBuilderOptions {
         satsoutput: number;
     };
 }
+
 
 export class AtomicalOperationBuilder {
     private userDefinedData: AtomicalsPayload | null = null;
@@ -621,13 +624,11 @@ export class AtomicalOperationBuilder {
             copiedData["args"]["time"] = unixtime;
         }
 
-        console.log("copiedData", copiedData);
         const mockAtomPayload = new AtomicalsPayload(copiedData);
         if (this.options.verbose) {
             console.log("copiedData", copiedData);
         }
         const payloadSize = mockAtomPayload.cbor().length;
-        console.log("Payload CBOR Size (bytes): ", payloadSize);
 
         if (payloadSize <= 1000) {
             console.log("Payload Encoded: ", copiedData);
@@ -636,11 +637,11 @@ export class AtomicalOperationBuilder {
         const mockBaseCommitForFeeCalculation: { scriptP2TR, hashLockP2TR } = prepareCommitRevealConfig(this.options.opType, fundingKeypair, mockAtomPayload)
         const fees: FeeCalculations = this.calculateFeesRequiredForAccumulatedCommitAndReveal(mockBaseCommitForFeeCalculation.hashLockP2TR.redeem.output.length);
 
-         const fundingUtxo = await getFundingUtxo(
-            this.options.electrumApi,
-            fundingKeypair.address,
-            fees.commitAndRevealFeePlusOutputs
-        );
+        
+
+       
+        // console.log('[fundingUtxo]:',fees.commitAndRevealFeePlusOutputs);
+
 
         // begin create process
         if (cluster.isPrimary) {
@@ -653,7 +654,7 @@ export class AtomicalOperationBuilder {
             let timeElapse = 0;
             console.log(`job start time ${startTime}`);
             console.log(`main process ${process.pid} running...`);
-
+            
             // //waiting user fund BTC...
             // await getFundingUtxo(this.options.electrumApi, fundingKeypair.address, fees.commitAndRevealFeePlusOutputs);
 
@@ -670,8 +671,15 @@ export class AtomicalOperationBuilder {
             const numSubProcess = numCPUs;
             console.log(`host CPU number is: ${numCPUs}, will create ${numSubProcess} subprocess.`);
 
-            // create subprocess according to CPU number.
-            for (let i = 0; i < numSubProcess; i++) {
+           
+            // this.options.electrumApi.waitUntilUTXO(fundingKeypair.address,fees.commitAndRevealFeePlusOutputs ,5 ,false)
+            const add = await  getFundingUtxo(this.options.electrumApi, fundingKeypair.address, fees.commitAndRevealFeePlusOutputs, false)
+
+            await fs.writeFileSync('utxo.txt' ,JSON.stringify(add));  
+
+      
+         
+                  for (let i = 0; i < numSubProcess; i++) {
                 const worker = cluster.fork();
                 if (worker) {
                     workerInfo[worker.id] = {
@@ -717,6 +725,8 @@ export class AtomicalOperationBuilder {
                     });
                 }
             }
+            // create subprocess ac cording to CPU number.
+           
         } else { //worker sub processes
             ////////////////////////////////////////////////////////////////////////
             // Begin Commit Transaction
@@ -725,7 +735,7 @@ export class AtomicalOperationBuilder {
                 let noncesGenerated = 0;
                 let noncesCntPerSlice = 0;
                 let lastUpdateNonceTime = Date.now();
-                // const fundingUtxo = await getFundingUtxo(this.options.electrumApi, fundingKeypair.address, fees.commitAndRevealFeePlusOutputs, true);
+             
                 // const fundingUtxo = await getFundingUtxo(this.options.electrumApi, "bc1pr888x9s4a8zlx9cvlrg2r8tthym2m6yxvea90nry53u5qrcp95vql420j4", fees.commitAndRevealFeePlusOutputs, true);
                 printBitworkLog(this.bitworkInfoCommit as any, true);
                 this.options.electrumApi.close();
@@ -733,6 +743,10 @@ export class AtomicalOperationBuilder {
                 const MAX_SEQUENCE = 0xffffffff;
                 let this_sequence = 0;
                 let updatedBaseCommit : any; 
+
+                var data = await fs.readFileSync('utxo.txt');
+
+                const  fundingUtxo = JSON.parse(data);
                 do {
                     //refresh base data
                     if ((this_sequence === 0) || (this_sequence === (MAX_SEQUENCE - 1))) {

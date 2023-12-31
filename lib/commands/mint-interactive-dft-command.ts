@@ -12,6 +12,7 @@ import { getKeypairInfo } from "../utils/address-keypair-path";
 import { checkBaseRequestOptions, decorateAtomical } from "../utils/atomical-format-helpers";
 import { BaseRequestOptions } from "../interfaces/api.interface";
 import { AtomicalOperationBuilder } from "../utils/atomical-operation-builder";
+import { getFundingUtxo } from "../utils/select-funding-utxo";
 const tinysecp: TinySecp256k1Interface = require('tiny-secp256k1');
 initEccLib(tinysecp as any);
 const ECPair: ECPairAPI = ECPairFactory(tinysecp);
