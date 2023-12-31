@@ -14,7 +14,7 @@ import { toOutputScript } from 'bitcoinjs-lib/src/address';
 import { compactIdToOutpoint, outpointToCompactId } from './utils/atomical-format-helpers';
 import * as quotes from 'success-motivational-quotes'; 
 import * as chalk from 'chalk';
- 
+import NETWORK from './network'
 dotenv.config();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -1597,14 +1597,16 @@ program.command('mint-nft')
   .option('--bitworkr <string>', 'Whether to put any bitwork proof of work into the token mint. Applies to the reveal transaction.')
   .option('--parent <string>', 'Whether to require a parent atomical to be spent along with the mint.')
   .option('--parentowner <string>', 'Wallet owner of the parent to spend along with the mint.')
-  .option('--disablechalk', 'Whether to disable the real-time chalked logging of each hash for mining. Improvements mining performance to set this flag')
+  .option('--disablechalk ', 'Whether to disable the real-time chalked logging of each hash for mining. Improvements mining performance to set this flag')
+  .option('--network  <number>', '选择网络')
   .action(async (files, options) => {
     const start = Date.now() /1000;
     console.log('[开始时间]:',start);
     try {
+      const apiUrl=  NETWORK[options.network?? 0];
       const walletInfo = await validateWalletStorage();
       const config: ConfigurationInterface = validateCliInputs();
-      const atomicals = new Atomicals(ElectrumApi.createClient(process.env.ELECTRUMX_PROXY_BASE_URL || ''));
+      const atomicals = new Atomicals(ElectrumApi.createClient(apiUrl || ''));
       let initialOwnerAddress = resolveAddress(walletInfo, options.initialowner, walletInfo.primary);
       let parentOwnerRecord = resolveWalletAliasNew(walletInfo, options.parentowner, walletInfo.primary);
       let fundingRecord = resolveWalletAliasNew(walletInfo, options.funding, walletInfo.funding);
