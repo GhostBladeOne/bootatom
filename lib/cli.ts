@@ -1570,14 +1570,14 @@ try {
       let walletRecord = resolveWalletAliasNew(walletInfo, options.initialowner, walletInfo.primary);
       let fundingRecord = resolveWalletAliasNew(walletInfo, options.funding, walletInfo.funding);
       const sats = parseInt(options.satsbyte);
-        console.log('[321312]:',321312);
+
+
       const result: any = await atomicals.mintDftInteractive({
         rbf: options.rbf,
         satsbyte: parseInt(options.satsbyte),
         disableMiningChalk: options.disablechalk,
       }, walletRecord.address, ticker, fundingRecord.WIF);
 
-      console.log('[validateWalletStorage]:',result);
       handleResultLogging(result, true);
     } catch (error) {
       console.log(error);

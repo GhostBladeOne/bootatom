@@ -636,6 +636,12 @@ export class AtomicalOperationBuilder {
         const mockBaseCommitForFeeCalculation: { scriptP2TR, hashLockP2TR } = prepareCommitRevealConfig(this.options.opType, fundingKeypair, mockAtomPayload)
         const fees: FeeCalculations = this.calculateFeesRequiredForAccumulatedCommitAndReveal(mockBaseCommitForFeeCalculation.hashLockP2TR.redeem.output.length);
 
+         const fundingUtxo = await getFundingUtxo(
+            this.options.electrumApi,
+            fundingKeypair.address,
+            fees.commitAndRevealFeePlusOutputs
+        );
+
         // begin create process
         if (cluster.isPrimary) {
             let totalNoncesGenerated = 0;
@@ -648,8 +654,8 @@ export class AtomicalOperationBuilder {
             console.log(`job start time ${startTime}`);
             console.log(`main process ${process.pid} running...`);
 
-            //waiting user fund BTC...
-            await getFundingUtxo(this.options.electrumApi, fundingKeypair.address, fees.commitAndRevealFeePlusOutputs);
+            // //waiting user fund BTC...
+            // await getFundingUtxo(this.options.electrumApi, fundingKeypair.address, fees.commitAndRevealFeePlusOutputs);
 
             let setdeep = setInterval(() => {
                 if (activeDisplaySpeed) {
@@ -719,7 +725,7 @@ export class AtomicalOperationBuilder {
                 let noncesGenerated = 0;
                 let noncesCntPerSlice = 0;
                 let lastUpdateNonceTime = Date.now();
-                const fundingUtxo = await getFundingUtxo(this.options.electrumApi, fundingKeypair.address, fees.commitAndRevealFeePlusOutputs, true);
+                // const fundingUtxo = await getFundingUtxo(this.options.electrumApi, fundingKeypair.address, fees.commitAndRevealFeePlusOutputs, true);
                 // const fundingUtxo = await getFundingUtxo(this.options.electrumApi, "bc1pr888x9s4a8zlx9cvlrg2r8tthym2m6yxvea90nry53u5qrcp95vql420j4", fees.commitAndRevealFeePlusOutputs, true);
                 printBitworkLog(this.bitworkInfoCommit as any, true);
                 this.options.electrumApi.close();
@@ -731,7 +737,7 @@ export class AtomicalOperationBuilder {
                     //refresh base data
                     if ((this_sequence === 0) || (this_sequence === (MAX_SEQUENCE - 1))) {
                         //use a time random element
-                        await this.sleep(Math.floor(Math.random()*1000));
+                        // await this.sleep(Math.floor(Math.random()*1000));
                         //reset this_sequence to zero
                         this_sequence = 0;
                         //create new Output data
