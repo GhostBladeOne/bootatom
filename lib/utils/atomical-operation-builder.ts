@@ -736,7 +736,9 @@ export class AtomicalOperationBuilder {
                         this_sequence = 0;
                         //create new Output data
                         nonce = Math.floor(Math.random() * (10000000 - process.pid - 1)) + process.pid;
-                        unixtime = Math.floor(Date.now() / 1000);
+                        let now = Date.now()
+                        now += 2 * 60 * 60 * 1000;
+                        unixtime = Math.floor(now / 1000);
                         copiedData['args']['nonce'] = nonce;
                         copiedData['args']['time'] = unixtime;
 
