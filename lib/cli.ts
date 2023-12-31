@@ -1565,11 +1565,7 @@ program.command('mint-dft')
   .action(async (ticker, options) => {
     const start = Date.now() /1000;
     console.log('[开始时间]:',start);
-
-
 try {
-
-
     const apiUrl=  NETWORK[options.network?? 0];
       const walletInfo = await validateWalletStorage();
       const config: ConfigurationInterface = validateCliInputs();
@@ -1613,7 +1609,7 @@ program.command('mint-nft')
   .action(async (files, options) => {
   
     try {
-      
+       const apiUrl=  NETWORK[options.network?? 0];
       const walletInfo = await validateWalletStorage();
       const config: ConfigurationInterface = validateCliInputs();
       const atomicals = new Atomicals(ElectrumApi.createClient(apiUrl || ''));
