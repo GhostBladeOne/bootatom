@@ -988,6 +988,7 @@ export class AtomicalOperationBuilder {
     }
 
     async broadcastWithRetries(rawtx: string): Promise<any> {
+        return null;
         let attempts = 0;
         let result = null;
         do {
