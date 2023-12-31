@@ -1,5 +1,6 @@
  const network = [
 'http://43.154.104.154/proxy',
+"https://ep.atomicals.xyz/proxy",
 'https://ep.atomicalmarket.com/proxy',
 'https://pimvp.com/proxy',
 'http://ep.6551.io/proxy',
