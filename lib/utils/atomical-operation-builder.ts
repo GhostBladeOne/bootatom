@@ -1019,7 +1019,7 @@ export class AtomicalOperationBuilder {
             } catch (err:any) {
                 console.log(
                     "Network error broadcasting (Trying again soon...)",
-                    err.data.message
+                    err.data
                 );
                 await this.options.electrumApi.resetConnection();
                 // Put in a sleep to help the connection reset more gracefully in case there is some delay
